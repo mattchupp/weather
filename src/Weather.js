@@ -28,7 +28,7 @@ class Weather extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
         <Summary summary={this.state.summary} />
         <Temperature temp={Math.round(this.state.temp)} />
       </div>

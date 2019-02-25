@@ -12,15 +12,14 @@ class GeoCoding extends Component {
     };
   }
 
-/* AIzaSyDA59Hgfn2YG50uqDJZXAZEm2Q8w4fzZrE */
-
   componentDidMount() {
+
     axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?address=Champaign+IL,+CA&key=AIzaSyDA59Hgfn2YG50uqDJZXAZEm2Q8w4fzZrE`)
     .then(res => {
       this.setState({ geocode: res.data });
+      console.log(res.data);
     })
   }
-
 
   render() {
     return (
