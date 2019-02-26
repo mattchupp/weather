@@ -6,18 +6,23 @@ class GeoCoding extends Component {
   constructor() {
     super();
     this.state = {
-      geocode: [],
-      long: "",
-      lat: ""
+      long: null,
+      lat: null,
+      city: null,
     };
   }
 
   componentDidMount() {
-    axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?address=Champaign+IL,+CA&key=AIzaSyDA59Hgfn2YG50uqDJZXAZEm2Q8w4fzZrE`)
+    axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/JZtnzsSPUV18mGJRsWf5nVG9vngAc8c12VXdaRfqv2xp77q4mSPy6yZWctEDAVAc/info.json/61821/degrees`)
     .then(res => {
-      this.setState({ geocode: res.data });
-      console.log(res.data);
-    })
+      let presentState = {...this.state};
+        presentState.long = res.data.lng;
+        presentState.lat = res.data.lat;
+        presentState.city = res.data.city;
+        this.setState({ ...presentState });
+      }).catch(err => {
+        console.log(err);
+      })
   }
 
 
@@ -27,7 +32,9 @@ class GeoCoding extends Component {
 
     return (
       <div>
-
+        <p>Lat:{this.state.lat}</p>
+        <p>Lng:{this.state.long}</p>
+        <p>City:{this.state.city}</p>
       </div>
     )
   }
