@@ -27,8 +27,18 @@ class Weather extends Component {
 
 
   render() {
+    const forecast = {
+      backgroundColor: '#2f57ff',
+      padding: '20px 10px',
+      color: 'white',
+      width: '100px',
+      textAlign: 'center',
+      margin: '0 auto'
+    }
+
+
     return (
-      <div>
+      <div style={forecast}>
         <Summary summary={this.state.summary} />
         <Temperature temp={Math.round(this.state.temp)} />
       </div>

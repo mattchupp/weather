@@ -13,7 +13,6 @@ class GeoCoding extends Component {
   }
 
   componentDidMount() {
-
     axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?address=Champaign+IL,+CA&key=AIzaSyDA59Hgfn2YG50uqDJZXAZEm2Q8w4fzZrE`)
     .then(res => {
       this.setState({ geocode: res.data });
@@ -21,9 +20,13 @@ class GeoCoding extends Component {
     })
   }
 
+
   render() {
+
+    // const gc = this.state.geocode.Data;
+
     return (
-      <div className="container">
+      <div>
 
       </div>
     )
