@@ -68,6 +68,7 @@ class Weather extends Component {
   handleSubmit(event) {
     this.getWeather();
     this.setState({submitted: true});
+    this.setState({loaded: false});
     event.preventDefault();
   }
 
