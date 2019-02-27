@@ -18,6 +18,7 @@ class Weather extends Component {
       },
       temp: "",
       summary: "",
+      submitted: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -58,6 +59,7 @@ class Weather extends Component {
 
   handleSubmit(event) {
     this.getWeather();
+    this.setState({submitted: true});
     event.preventDefault();
   }
 
@@ -71,23 +73,39 @@ class Weather extends Component {
       margin: '0 auto'
     }
 
-    return (
-      <div style={forecast}>
+    if (this.state.submitted) {
+      return (
+        <div style={forecast}>
 
-        <form className="uk-margin-small" onSubmit={this.handleSubmit}>
-          <div className="uk-inline">
-            <span className="uk-form-icon" uk-icon="icon: search"></span>
-            <input className="uk-input uk-form-width-medium"
-              type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
-          </div>
-        </form>
+          <form className="uk-margin-small" onSubmit={this.handleSubmit}>
+            <div className="uk-inline">
+              <span className="uk-form-icon" uk-icon="icon: search"></span>
+              <input className="uk-input uk-form-width-medium"
+                type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
+            </div>
+          </form>
 
-        <Summary summary={this.state.summary} />
-        <Temperature temp={Math.round(this.state.temp)} />
-        <City city={this.state.location.city} state={this.state.location.state} />
+          <Summary summary={this.state.summary} />
+          <Temperature temp={Math.round(this.state.temp)} />
+          <City city={this.state.location.city} state={this.state.location.state} />
 
-      </div>
-    )
+        </div>
+      )
+    } else {
+      return (
+        <div style={forecast}>
+
+          <form className="uk-margin-small" onSubmit={this.handleSubmit}>
+            <div className="uk-inline">
+              <span className="uk-form-icon" uk-icon="icon: search"></span>
+              <input className="uk-input uk-form-width-medium"
+                type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
+            </div>
+          </form>
+          
+        </div>
+      )
+    }
   }
 
 }
