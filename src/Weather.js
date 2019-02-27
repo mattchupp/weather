@@ -34,7 +34,7 @@ class Weather extends Component {
     * second get request gets the weather data
   */
   getWeather = () => {
-      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/IkG7QhHlGDEe44eEWMOj6Mcsmp0uKz2Eal6qSQqWrpWEGwmw9OsLrnDlSugjjUdU/info.json/${this.state.zipcode}/degrees`)
+      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${this.state.zipcode}/degrees`)
       .then(res => {
         let presentState = {...this.state};
           presentState.location.long = res.data.lng;
