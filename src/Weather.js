@@ -14,12 +14,12 @@ class Weather extends Component {
       location: {
         long: null,
         lat: null,
-        city: null,
-        state: null
+        city: "Champaign",
+        state: "IL"
       },
-      temp: "",
-      summary: "",
-      icon: "",
+      temp: "20",
+      summary: "clear",
+      icon: "wind",
       submitted: false,
       loaded: false
     };
@@ -73,7 +73,6 @@ class Weather extends Component {
 
   render() {
     const forecast = {
-      backgroundColor: '#2f57ff',
       padding: '20px 10px',
       color: 'white',
       width: '100%',
@@ -94,9 +93,13 @@ class Weather extends Component {
             </div>
           </form>
 
-          <Summary summary={this.state.summary} icon={this.state.icon} />
-          <Temperature temp={Math.round(this.state.temp)} />
-          <City city={this.state.location.city} state={this.state.location.state} />
+          <div className="uk-flex uk-flex-center">
+            <div className="uk-card uk-card-small uk-card-secondary uk-card-body uk-width-1-2">
+              <City city={this.state.location.city} state={this.state.location.state} />
+              <Summary summary={this.state.summary} icon={this.state.icon} />
+              <Temperature temp={Math.round(this.state.temp)} />
+            </div>
+          </div>
 
         </div>
       )

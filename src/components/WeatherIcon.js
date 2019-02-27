@@ -12,7 +12,8 @@ import PartlyCloudyDay from '../assets/icons/partly-cloudy-day_icon.svg';
 import PartlyCloudyNight from '../assets/icons/partly-cloudy-night_icon.svg';
 
 const icon = {
-  width: '30px',
+  width: '40px',
+  marginTop: '20px'
 }
 
 const weatherIcon = (props) => {

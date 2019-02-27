@@ -8,7 +8,7 @@ class Summary extends Component {
     return (
       <div>
           <WeatherIcon icon={this.props.icon} />
-          {this.props.summary}
+          <p className="uk-text-lead" >{this.props.summary}</p>
       </div>
     )
   }

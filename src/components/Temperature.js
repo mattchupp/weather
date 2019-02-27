@@ -5,7 +5,7 @@ class Temperature extends Component {
   render() {
     return (
       <div>
-        <p>{this.props.temp}&deg;F</p>
+        <p className="uk-text-lead">{this.props.temp}&deg;F</p>
       </div>
     )
   }

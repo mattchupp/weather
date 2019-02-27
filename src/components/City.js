@@ -4,8 +4,8 @@ class City extends Component {
 
   render() {
     return (
-      <div>
-        <p>{this.props.city}, {this.props.state}</p>
+      <div className="uk-card-title">
+        <h2>{this.props.city}, {this.props.state}</h2>
       </div>
     )
   }
