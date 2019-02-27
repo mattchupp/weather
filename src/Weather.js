@@ -34,7 +34,7 @@ class Weather extends Component {
     * second get request gets the weather data
   */
   getWeather = () => {
-      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/JZtnzsSPUV18mGJRsWf5nVG9vngAc8c12VXdaRfqv2xp77q4mSPy6yZWctEDAVAc/info.json/${this.state.zipcode}/degrees`)
+      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/IkG7QhHlGDEe44eEWMOj6Mcsmp0uKz2Eal6qSQqWrpWEGwmw9OsLrnDlSugjjUdU/info.json/${this.state.zipcode}/degrees`)
       .then(res => {
         let presentState = {...this.state};
           presentState.location.long = res.data.lng;
@@ -100,7 +100,7 @@ class Weather extends Component {
           </form>
 
           <div className="uk-flex uk-flex-center">
-            <div className="uk-card uk-card-small uk-card-secondary uk-card-body uk-width-1-2">
+            <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
               <City city={this.state.location.city} state={this.state.location.state} />
               <Summary summary={this.state.summary} icon={this.state.icon} />
               <Temperature temp={Math.round(this.state.temp)} />
