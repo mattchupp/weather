@@ -8,7 +8,7 @@ class Weather extends Component {
   constructor() {
     super();
     this.state = {
-      zipcode: "61821",
+      zipcode: "",
       location: {
         long: null,
         lat: null,
@@ -24,6 +24,7 @@ class Weather extends Component {
 
   }
 
+  /* fetches weather data */
   getWeather = () => {
       axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/JZtnzsSPUV18mGJRsWf5nVG9vngAc8c12VXdaRfqv2xp77q4mSPy6yZWctEDAVAc/info.json/${this.state.zipcode}/degrees`)
       .then(res => {
@@ -52,40 +53,13 @@ class Weather extends Component {
   /* Form Handlers */
   handleChange(event) {
     this.setState({zipcode: event.target.value});
+    console.log(this.state.location.zipcode);
   }
 
   handleSubmit(event) {
     this.getWeather();
     event.preventDefault();
   }
-
-/*
-  componentDidMount() {
-      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/JZtnzsSPUV18mGJRsWf5nVG9vngAc8c12VXdaRfqv2xp77q4mSPy6yZWctEDAVAc/info.json/${this.state.location.zipcode}/degrees`)
-      .then(res => {
-        let presentState = {...this.state};
-          presentState.location.long = res.data.lng;
-          presentState.location.lat = res.data.lat;
-          presentState.location.city = res.data.city;
-          presentState.location.state = res.data.state;
-          this.setState({ ...presentState });
-        }).catch(err => {
-          console.log(err);
-        })
-    .then(() => {
-      axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/895d852c061ef91db419f40459c25d83/${this.state.location.lat},${this.state.location.long}`)
-      .then(res => {
-        let presentState = {...this.state};
-          presentState.temp = res.data.currently.temperature;
-          presentState.summary = res.data.currently.summary;
-          this.setState({ ...presentState });
-        }).catch(err => {
-          console.log(err);
-        })
-    })
-  }
-  */
-
 
   render() {
     const forecast = {
@@ -97,17 +71,15 @@ class Weather extends Component {
       margin: '0 auto'
     }
 
-    console.log(this.state.location.zipcode);
-
     return (
       <div style={forecast}>
 
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Zipcode:
-            <input type="text" value={this.state.address} onChange={this.handleChange} />
-          </label>
-          <input type="submit" value="Submit" />
+        <form className="uk-margin-small" onSubmit={this.handleSubmit}>
+          <div className="uk-inline">
+            <span className="uk-form-icon" uk-icon="icon: search"></span>
+            <input className="uk-input uk-form-width-medium"
+              type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
+          </div>
         </form>
 
         <Summary summary={this.state.summary} />

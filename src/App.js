@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import Weather from './Weather.js';
-// import Search from './Search.js';
 
 
 
