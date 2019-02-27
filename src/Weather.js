@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Temperature from './components/Temperature.js'
 import Summary from './components/Summary.js'
+import City from './components/City.js'
 
 import axios from 'axios';
 
@@ -53,7 +54,6 @@ class Weather extends Component {
   /* Form Handlers */
   handleChange(event) {
     this.setState({zipcode: event.target.value});
-    console.log(this.state.location.zipcode);
   }
 
   handleSubmit(event) {
@@ -84,7 +84,8 @@ class Weather extends Component {
 
         <Summary summary={this.state.summary} />
         <Temperature temp={Math.round(this.state.temp)} />
-        <p>City: {this.state.location.city}, {this.state.location.state}</p>
+        <City city={this.state.location.city} state={this.state.location.state} />
+
       </div>
     )
   }
