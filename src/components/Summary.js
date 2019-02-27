@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import WeatherIcon from './WeatherIcon.js';
 
 class Summary extends Component {
 
   render() {
+
     return (
       <div>
-        <p>{this.props.summary}</p>
+          <WeatherIcon icon={this.props.icon} />
+          {this.props.summary}
       </div>
     )
   }

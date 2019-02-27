@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Temperature from './components/Temperature.js'
-import Summary from './components/Summary.js'
-import City from './components/City.js'
+import './App.css';
+import Temperature from './components/Temperature.js';
+import Summary from './components/Summary.js';
+import City from './components/City.js';
 
 import axios from 'axios';
 
@@ -18,7 +19,9 @@ class Weather extends Component {
       },
       temp: "",
       summary: "",
-      submitted: false
+      icon: "",
+      submitted: false,
+      loaded: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,7 +29,10 @@ class Weather extends Component {
 
   }
 
-  /* fetches weather data */
+  /* fetches weather data
+    * first get request takes zip code to get lat & long
+    * second get request gets the weather data
+  */
   getWeather = () => {
       axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/JZtnzsSPUV18mGJRsWf5nVG9vngAc8c12VXdaRfqv2xp77q4mSPy6yZWctEDAVAc/info.json/${this.state.zipcode}/degrees`)
       .then(res => {
@@ -45,7 +51,9 @@ class Weather extends Component {
         let presentState = {...this.state};
           presentState.temp = res.data.currently.temperature;
           presentState.summary = res.data.currently.summary;
+          presentState.icon = res.data.currently.icon;
           this.setState({ ...presentState });
+          this.setState({ loaded: true});
         }).catch(err => {
           console.log(err);
         })
@@ -73,7 +81,8 @@ class Weather extends Component {
       margin: '0 auto'
     }
 
-    if (this.state.submitted) {
+    /* make sure zip code is submitted and data is loaded before showing weather*/
+    if (this.state.submitted && this.state.loaded) {
       return (
         <div style={forecast}>
 
@@ -85,7 +94,7 @@ class Weather extends Component {
             </div>
           </form>
 
-          <Summary summary={this.state.summary} />
+          <Summary summary={this.state.summary} icon={this.state.icon} />
           <Temperature temp={Math.round(this.state.temp)} />
           <City city={this.state.location.city} state={this.state.location.state} />
 
@@ -102,7 +111,7 @@ class Weather extends Component {
                 type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
             </div>
           </form>
-          
+
         </div>
       )
     }
