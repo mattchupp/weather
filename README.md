@@ -17,5 +17,5 @@ Hosted on Netlify
 ## Running Locally
 
 Git clone or download. In project directory run 
-### `yarn run`
+### `yarn start`
 Site is at http://localhost:3000
