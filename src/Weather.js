@@ -80,6 +80,11 @@ class Weather extends Component {
       margin: '0 auto'
     }
 
+    const textInput = {
+      backgroundColor: '#303030',
+      color: 'white'
+    }
+
     /* make sure zip code is submitted and data is loaded before showing weather*/
     if (this.state.submitted && this.state.loaded) {
       return (
@@ -88,7 +93,7 @@ class Weather extends Component {
           <form className="uk-margin-small" onSubmit={this.handleSubmit}>
             <div className="uk-inline">
               <span className="uk-form-icon" uk-icon="icon: search"></span>
-              <input className="uk-input uk-form-width-medium"
+              <input style={textInput} className="uk-input uk-form-width-medium"
                 type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
             </div>
           </form>
@@ -110,7 +115,7 @@ class Weather extends Component {
           <form className="uk-margin-small" onSubmit={this.handleSubmit}>
             <div className="uk-inline">
               <span className="uk-form-icon" uk-icon="icon: search"></span>
-              <input className="uk-input uk-form-width-medium"
+              <input style={textInput} className="uk-input uk-form-width-medium"
                 type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
             </div>
           </form>
