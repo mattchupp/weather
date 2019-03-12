@@ -88,6 +88,26 @@ class Weather extends Component {
       color: 'white'
     }
 
+    if (this.state.submitted && !this.state.loaded) {
+      return (
+        <div style={forecast}>
+
+          <form className="uk-margin-small" onSubmit={this.handleSubmit}>
+            <div className="uk-inline">
+              <span className="uk-form-icon" uk-icon="icon: search"></span>
+              <input style={textInput} className="uk-input uk-form-width-medium"
+                type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
+            </div>
+          </form>
+
+          <div className="uk-flex uk-flex-center">
+            <p>Loading...</p>
+          </div>
+
+        </div>
+      )
+    }
+
     /* make sure zip code is submitted and data is loaded before showing weather*/
     if (this.state.submitted && this.state.loaded) {
       return (
