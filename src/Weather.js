@@ -14,12 +14,13 @@ class Weather extends Component {
       location: {
         long: null,
         lat: null,
-        city: "Champaign",
-        state: "IL"
+        city: "",
+        state: ""
       },
-      temp: "20",
-      summary: "clear",
-      icon: "wind",
+      temp: "",
+      summary: "",
+      icon: "",
+      currentTime: "",
       submitted: false,
       loaded: false
     };
@@ -52,6 +53,7 @@ class Weather extends Component {
           presentState.temp = res.data.currently.temperature;
           presentState.summary = res.data.currently.summary;
           presentState.icon = res.data.currently.icon;
+          presentState.currentTime = res.data.currently.time;
           this.setState({ ...presentState });
           this.setState({ loaded: true});
         }).catch(err => {
