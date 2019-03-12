@@ -21,6 +21,7 @@ class Weather extends Component {
       currentSummary: "",
       currentIcon: "",
       currentTime: "",
+      hourlySummary: "",
       submitted: false,
       loaded: false
     };
@@ -54,6 +55,7 @@ class Weather extends Component {
           presentState.currentSummary = res.data.currently.summary;
           presentState.currentIcon = res.data.currently.icon;
           presentState.currentTime = res.data.currently.time;
+          presentState.hourlySummary = res.data.hourly.summary;
           this.setState({ ...presentState });
           this.setState({ loaded: true});
         }).catch(err => {
@@ -126,6 +128,12 @@ class Weather extends Component {
               <City city={this.state.location.city} state={this.state.location.state} />
               <Summary summary={this.state.currentSummary} icon={this.state.currentIcon} />
               <Temperature temp={Math.round(this.state.currentTemp)} />
+              <p>{this.state.hourlySummary}</p>
+
+              <ul>
+                <li>{this.state.hourlyTime}</li>
+                <li>{this.state.hourlyTemp}</li>
+              </ul>
             </div>
           </div>
 
