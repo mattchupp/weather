@@ -10,12 +10,14 @@ Used to get the longitude and latitude from the zip code entered
 ### [Dark Sky Api](https://darksky.net)
 Gets the weather data
 
-## Hosting 
+## Hosting
 Hosted on Netlify
 [![Netlify Status](https://api.netlify.com/api/v1/badges/1d5a6144-f5f6-4ce8-b7cd-ad606f754762/deploy-status)](https://app.netlify.com/sites/reverent-turing-44c6ca/deploys)
 
+Production & Staging Branches
+
 ## Running Locally
 
-Git clone or download. In project directory run 
+Git clone or download. In project directory run
 ### `yarn start`
 Site is at http://localhost:3000

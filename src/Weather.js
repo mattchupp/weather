@@ -14,12 +14,13 @@ class Weather extends Component {
       location: {
         long: null,
         lat: null,
-        city: "Champaign",
-        state: "IL"
+        city: "",
+        state: ""
       },
-      temp: "20",
-      summary: "clear",
-      icon: "wind",
+      currentTemp: "",
+      currentSummary: "",
+      currentIcon: "",
+      currentTime: "",
       submitted: false,
       loaded: false
     };
@@ -49,9 +50,10 @@ class Weather extends Component {
       axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/895d852c061ef91db419f40459c25d83/${this.state.location.lat},${this.state.location.long}`)
       .then(res => {
         let presentState = {...this.state};
-          presentState.temp = res.data.currently.temperature;
-          presentState.summary = res.data.currently.summary;
-          presentState.icon = res.data.currently.icon;
+          presentState.currentTemp = res.data.currently.temperature;
+          presentState.currentSummary = res.data.currently.summary;
+          presentState.currentIcon = res.data.currently.icon;
+          presentState.currentTime = res.data.currently.time;
           this.setState({ ...presentState });
           this.setState({ loaded: true});
         }).catch(err => {
@@ -86,6 +88,26 @@ class Weather extends Component {
       color: 'white'
     }
 
+    if (this.state.submitted && !this.state.loaded) {
+      return (
+        <div style={forecast}>
+
+          <form className="uk-margin-small" onSubmit={this.handleSubmit}>
+            <div className="uk-inline">
+              <span className="uk-form-icon" uk-icon="icon: search"></span>
+              <input style={textInput} className="uk-input uk-form-width-medium"
+                type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
+            </div>
+          </form>
+
+          <div className="uk-flex uk-flex-center">
+            <div className="loader"></div>
+          </div>
+
+        </div>
+      )
+    }
+
     /* make sure zip code is submitted and data is loaded before showing weather*/
     if (this.state.submitted && this.state.loaded) {
       return (
@@ -102,8 +124,8 @@ class Weather extends Component {
           <div className="uk-flex uk-flex-center">
             <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
               <City city={this.state.location.city} state={this.state.location.state} />
-              <Summary summary={this.state.summary} icon={this.state.icon} />
-              <Temperature temp={Math.round(this.state.temp)} />
+              <Summary summary={this.state.currentSummary} icon={this.state.currentIcon} />
+              <Temperature temp={Math.round(this.state.currentTemp)} />
             </div>
           </div>
 
