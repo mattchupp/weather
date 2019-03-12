@@ -129,11 +129,6 @@ class Weather extends Component {
               <Summary summary={this.state.currentSummary} icon={this.state.currentIcon} />
               <Temperature temp={Math.round(this.state.currentTemp)} />
               <p>{this.state.hourlySummary}</p>
-
-              <ul>
-                <li>{this.state.hourlyTime}</li>
-                <li>{this.state.hourlyTemp}</li>
-              </ul>
             </div>
           </div>
 
