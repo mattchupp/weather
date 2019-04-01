@@ -90,7 +90,7 @@ class Weather extends Component {
       color: 'white'
     }
 
-    if (!this.state.submitted && !this.state.loaded) {
+    if (this.state.submitted && !this.state.loaded) {
       return (
         <div style={forecast}>
 
