@@ -5,15 +5,77 @@ html {
 }
 
 .loader {
-  border: 10px solid #202020; /* Light grey */
-  border-top: 10px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  animation: spin 1s linear infinite;
+  margin-top: 30px;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.circle1 {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid #6fd6dd;
+  background-color: #6fd6dd;
+  width: 10px;
+  height: 10px;
+  animation: updown infinite 2s ease-in;
+}
+
+@keyframes updown {
+  0%{transform: translate(0px, 0px)}
+  25%{transform: translate(0px, -15px)}
+  50%{transform: translate(0px, 15px)}
+  75%{transform: translate(0px, -15px)}
+  100%{transform: translate(0px, 0px)}
+}
+
+.circle2 {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid #6fd6dd;
+  background-color: #6fd6dd;
+  width: 10px;
+  height: 10px;
+  animation: leftright infinite 1s ease-out;
+}
+
+@keyframes leftright {
+  0%{transform: translate(0px, 0px)}
+  25%{transform: translate(-15px, 0px)}
+  50%{transform: translate(15px, 0px)}
+  75%{transform: translate(-15px, 0px)}
+  100%{transform: translate(0px, 0px)}
+}
+
+.circle3 {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid #6fd6dd;
+  background-color: #6fd6dd;
+  width: 10px;
+  height: 10px;
+  animation: diagonal1 infinite 3s;
+}
+
+@keyframes diagonal1 {
+  0%{transform: translate(0px, 0px)}
+  25%{transform: translate(-15px, 15px)}
+  50%{transform: translate(15px, -15px)}
+  75%{transform: translate(-15px, 15px)}
+  100%{transform: translate(0px, 0px)}
+}
+
+.circle4 {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid #6fd6dd;
+  background-color: #6fd6dd;
+  width: 10px;
+  height: 10px;
+  animation: diagonal2 infinite 3s;
+}
+
+@keyframes diagonal2 {
+  0%{transform: translate(0px, 0px)}
+  25%{transform: translate(15px, -15px)}
+  50%{transform: translate(-15px, 15px)}
+  75%{transform: translate(15px, -15px)}
+  100%{transform: translate(0px, 0px)}
 }

@@ -90,7 +90,7 @@ class Weather extends Component {
       color: 'white'
     }
 
-    if (this.state.submitted && !this.state.loaded) {
+    if (!this.state.submitted && !this.state.loaded) {
       return (
         <div style={forecast}>
 
@@ -103,7 +103,12 @@ class Weather extends Component {
           </form>
 
           <div className="uk-flex uk-flex-center">
-            <div className="loader"></div>
+            <div class="loader">
+              <div class="circle1"></div>
+              <div class="circle2"></div>
+              <div class="circle3"></div>
+              <div class="circle4"></div>
+            </div>
           </div>
 
         </div>
