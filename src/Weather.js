@@ -21,6 +21,7 @@ class Weather extends Component {
       currentSummary: "",
       currentIcon: "",
       currentTime: "",
+      hourlySummary: "",
       submitted: false,
       loaded: false
     };
@@ -54,6 +55,7 @@ class Weather extends Component {
           presentState.currentSummary = res.data.currently.summary;
           presentState.currentIcon = res.data.currently.icon;
           presentState.currentTime = res.data.currently.time;
+          presentState.hourlySummary = res.data.hourly.summary;
           this.setState({ ...presentState });
           this.setState({ loaded: true});
         }).catch(err => {
@@ -88,7 +90,7 @@ class Weather extends Component {
       color: 'white'
     }
 
-    if (this.state.submitted && !this.state.loaded) {
+    if (!this.state.submitted && !this.state.loaded) {
       return (
         <div style={forecast}>
 
@@ -101,7 +103,12 @@ class Weather extends Component {
           </form>
 
           <div className="uk-flex uk-flex-center">
-            <div className="loader"></div>
+            <div class="loader">
+              <div class="circle1"></div>
+              <div class="circle2"></div>
+              <div class="circle3"></div>
+              <div class="circle4"></div>
+            </div>
           </div>
 
         </div>
@@ -126,6 +133,7 @@ class Weather extends Component {
               <City city={this.state.location.city} state={this.state.location.state} />
               <Summary summary={this.state.currentSummary} icon={this.state.currentIcon} />
               <Temperature temp={Math.round(this.state.currentTemp)} />
+              <p>{this.state.hourlySummary}</p>
             </div>
           </div>
 
