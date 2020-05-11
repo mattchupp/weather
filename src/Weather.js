@@ -31,23 +31,38 @@ class Weather extends Component {
 
   }
 
+  componentDidMount() {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        console.log("Latitude is :", position.coords.latitude);
+        console.log("Longitude is :", position.coords.longitude);
+        let presentState = {...this.state};
+          presentState.location.long = position.coords.latitude;
+          presentState.location.lat = position.coords.longitude;
+          this.setState({...presentState});
+      });
+
+      this.getWeather();
+
+    }
+
   /* fetches weather data
     * first get request takes zip code to get lat & long
     * second get request gets the weather data
   */
   getWeather = () => {
-      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${this.state.zipcode}/degrees`)
-      .then(res => {
-        let presentState = {...this.state};
-          presentState.location.long = res.data.lng;
-          presentState.location.lat = res.data.lat;
-          presentState.location.city = res.data.city;
-          presentState.location.state = res.data.state;
-          this.setState({ ...presentState });
-        }).catch(err => {
-          console.log(err);
-        })
-    .then(() => {
+    //   axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${this.state.zipcode}/degrees`)
+    //   .then(res => {
+    //     let presentState = {...this.state};
+    //       presentState.location.long = res.data.lng;
+    //       presentState.location.lat = res.data.lat;
+    //       presentState.location.city = res.data.city;
+    //       presentState.location.state = res.data.state;
+    //       this.setState({ ...presentState });
+    //     }).catch(err => {
+    //       console.log(err);
+    //     })
+    // .then(() => {
+
       axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/895d852c061ef91db419f40459c25d83/${this.state.location.lat},${this.state.location.long}`)
       .then(res => {
         let presentState = {...this.state};
@@ -61,7 +76,7 @@ class Weather extends Component {
         }).catch(err => {
           console.log(err);
         })
-    })
+
   }
 
   /* Form Handlers */
@@ -90,7 +105,8 @@ class Weather extends Component {
       color: 'white'
     }
 
-    if (this.state.submitted && !this.state.loaded) {
+    //if (this.state.submitted && !this.state.loaded) {
+    if (!this.state.loaded) {
       return (
         <div style={forecast}>
 
@@ -116,7 +132,8 @@ class Weather extends Component {
     }
 
     /* make sure zip code is submitted and data is loaded before showing weather*/
-    if (this.state.submitted && this.state.loaded) {
+    //if (this.state.submitted && this.state.loaded) {
+    if (this.state.loaded) {
       return (
         <div style={forecast}>
 
