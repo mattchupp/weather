@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 import Temperature from '../components/Temperature.js';
 import Summary from '../components/Summary.js';
@@ -68,63 +68,81 @@ function CurrentForcast() {
   //     loaded: false
   //   };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
 
   // }
+
+  // Set state
+  const [currentWeather, setCurrentWeather] = useState([]); 
+  const [currentLocation, setCurrentLocation] = useState([]); 
+  const [zipcode, setZipcode] = useState('')
 
   // componentDidMount(){
   //
   // }
 
-
   /* fetches weather data
     * first get request takes zip code to get lat & long
     * second get request gets the weather data
   */
-  getWeather = () => {
+  const getWeather = () => {
 
       // const darkSkyKey = process.env.DARK_SKY_KEY;
 
-      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${this.state.zipcode}/degrees`)
+      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${zipcode}/degrees`)
       .then(res => {
-        let presentState = {...this.state};
-          presentState.location.long = res.data.lng;
-          presentState.location.lat = res.data.lat;
-          presentState.location.city = res.data.city;
-          presentState.location.state = res.data.state;
-          this.setState({ ...presentState });
+        // let presentState = {...this.state};
+        //   presentState.location.long = res.data.lng;
+        //   presentState.location.lat = res.data.lat;
+        //   presentState.location.city = res.data.city;
+        //   presentState.location.state = res.data.state;
+        //   this.setState({ ...presentState });
+        setCurrentLocation(res.data); 
+        console.log(res.data); 
         }).catch(err => {
           console.log(err);
         })
-    .then(() => {
-      axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/895d852c061ef91db419f40459c25d83/${this.state.location.lat},${this.state.location.long}`)
+    // .then(() => {
+    //   axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/895d852c061ef91db419f40459c25d83/${this.state.location.lat},${this.state.location.long}`)
+    //   .then(res => {
+    //     let presentState = {...this.state};
+    //       presentState.currentTemp = res.data.currently.temperature;
+    //       presentState.currentSummary = res.data.currently.summary;
+    //       presentState.currentIcon = res.data.currently.icon;
+    //       presentState.currentTime = res.data.currently.time;
+    //       presentState.hourlySummary = res.data.hourly.summary;
+    //       this.setState({ ...presentState });
+    //       this.setState({ loaded: true});
+    //     }).catch(err => {
+    //       console.log(err);
+    //     })
+    // })
+  }
+
+  useEffect(() => {
+    axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${zipcode}/degrees`)
       .then(res => {
-        let presentState = {...this.state};
-          presentState.currentTemp = res.data.currently.temperature;
-          presentState.currentSummary = res.data.currently.summary;
-          presentState.currentIcon = res.data.currently.icon;
-          presentState.currentTime = res.data.currently.time;
-          presentState.hourlySummary = res.data.hourly.summary;
-          this.setState({ ...presentState });
-          this.setState({ loaded: true});
+        // let presentState = {...this.state};
+        //   presentState.location.long = res.data.lng;
+        //   presentState.location.lat = res.data.lat;
+        //   presentState.location.city = res.data.city;
+        //   presentState.location.state = res.data.state;
+        //   this.setState({ ...presentState });
+        setCurrentLocation(res.data); 
+        console.log(res.data); 
         }).catch(err => {
           console.log(err);
         })
-    })
-  }
+  }, [zipcode])
 
-  /* Form Handlers */
-
-  handleChange(event) {
-    // if(event.target.value )
-    this.setState({zipcode: event.target.value});
-  }
-
-  handleSubmit(event) {
-    this.getWeather();
-    this.setState({submitted: true});
-    this.setState({loaded: false});
+  
+  const handleSubmit = (event) => {
+    // this.getWeather();
+    // this.setState({submitted: true});
+    // this.setState({loaded: false});
+    console.log('Submitted: ' + zipcode); 
+    console.log(currentLocation);
     event.preventDefault();
   }
 
@@ -142,9 +160,33 @@ function CurrentForcast() {
       color: 'white'
     }
 
-    /*
-    If submitted but not yet loaded show the loading animation
-    */
+  return (
+    <div style={forecast}>
+
+      <form className="uk-margin-small" onSubmit={handleSubmit}>
+        <div className="uk-inline">
+          <span className="uk-form-icon" uk-icon="icon: search"></span>
+          <input style={textInput} className="uk-input uk-form-width-medium"
+            type="text" placeholder="Zipcode" value={zipcode} onChange={event => setZipcode(event.target.value)} />
+        </div>
+      </form>
+
+      {/* <div className="uk-flex uk-flex-center">
+        <div className="loader">
+          <div className="circle1"></div>
+          <div className="circle2"></div>
+          <div className="circle3"></div>
+          <div className="circle4"></div>
+        </div>
+      </div> */}
+
+    </div>
+  )
+
+} 
+/*
+    // If submitted but not yet loaded show the loading animation
+
     if (this.state.submitted && !this.state.loaded) {
       return (
         <div style={forecast}>
@@ -170,7 +212,7 @@ function CurrentForcast() {
       )
     }
 
-    /* make sure zip code is submitted and data is loaded before showing weather*/
+    // make sure zip code is submitted and data is loaded before showing weather
     //if (this.state.submitted && this.state.loaded) {
     if (this.state.submitted && this.state.loaded) {
       return (
@@ -214,6 +256,7 @@ function CurrentForcast() {
 
 }
 
+*/
 
 export default CurrentForcast
 
