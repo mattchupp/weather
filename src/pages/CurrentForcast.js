@@ -77,6 +77,7 @@ function CurrentForcast() {
   const [currentWeather, setCurrentWeather] = useState([]); 
   const [currentLocation, setCurrentLocation] = useState([]); 
   const [zipcode, setZipcode] = useState('')
+  const [submitted, setSubmitted] = useState(false)
 
   // componentDidMount(){
   //
@@ -121,20 +122,16 @@ function CurrentForcast() {
   }
 
   useEffect(() => {
-    axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${zipcode}/degrees`)
+    if(submitted) {
+      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${zipcode}/degrees`)
       .then(res => {
-        // let presentState = {...this.state};
-        //   presentState.location.long = res.data.lng;
-        //   presentState.location.lat = res.data.lat;
-        //   presentState.location.city = res.data.city;
-        //   presentState.location.state = res.data.state;
-        //   this.setState({ ...presentState });
         setCurrentLocation(res.data); 
         console.log(res.data); 
-        }).catch(err => {
-          console.log(err);
-        })
-  }, [zipcode])
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+  }, [zipcode, submitted])
 
   
   const handleSubmit = (event) => {
@@ -143,6 +140,7 @@ function CurrentForcast() {
     // this.setState({loaded: false});
     console.log('Submitted: ' + zipcode); 
     console.log(currentLocation);
+    setSubmitted(true); 
     event.preventDefault();
   }
 
