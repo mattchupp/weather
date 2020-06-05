@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
-import Temperature from './components/Temperature.js';
-import Summary from './components/Summary.js';
-import City from './components/City.js';
+import '../App.css';
+import Temperature from '../components/Temperature.js';
+import Summary from '../components/Summary.js';
+import City from '../components/City.js';
 
 import axios from 'axios';
 
