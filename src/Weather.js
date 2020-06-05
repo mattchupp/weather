@@ -31,11 +31,19 @@ class Weather extends Component {
 
   }
 
+  // componentDidMount(){
+  //
+  // }
+
+
   /* fetches weather data
     * first get request takes zip code to get lat & long
     * second get request gets the weather data
   */
   getWeather = () => {
+
+      // const darkSkyKey = process.env.DARK_SKY_KEY;
+
       axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${this.state.zipcode}/degrees`)
       .then(res => {
         let presentState = {...this.state};
@@ -65,7 +73,9 @@ class Weather extends Component {
   }
 
   /* Form Handlers */
+
   handleChange(event) {
+    // if(event.target.value )
     this.setState({zipcode: event.target.value});
   }
 
@@ -90,6 +100,9 @@ class Weather extends Component {
       color: 'white'
     }
 
+    /*
+    If submitted but not yet loaded show the loading animation
+    */
     if (this.state.submitted && !this.state.loaded) {
       return (
         <div style={forecast}>
@@ -103,11 +116,11 @@ class Weather extends Component {
           </form>
 
           <div className="uk-flex uk-flex-center">
-            <div class="loader">
-              <div class="circle1"></div>
-              <div class="circle2"></div>
-              <div class="circle3"></div>
-              <div class="circle4"></div>
+            <div className="loader">
+              <div className="circle1"></div>
+              <div className="circle2"></div>
+              <div className="circle3"></div>
+              <div className="circle4"></div>
             </div>
           </div>
 
@@ -116,6 +129,7 @@ class Weather extends Component {
     }
 
     /* make sure zip code is submitted and data is loaded before showing weather*/
+    //if (this.state.submitted && this.state.loaded) {
     if (this.state.submitted && this.state.loaded) {
       return (
         <div style={forecast}>
@@ -160,3 +174,66 @@ class Weather extends Component {
 
 
 export default Weather
+
+
+
+
+
+
+/*
+Code that has been removed in my refactoring
+
+getWeather = () => {
+    axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${this.state.zipcode}/degrees`)
+    .then(res => {
+      let presentState = {...this.state};
+        presentState.location.long = res.data.lng;
+        presentState.location.lat = res.data.lat;
+        presentState.location.city = res.data.city;
+        presentState.location.state = res.data.state;
+        this.setState({ ...presentState });
+      }).catch(err => {
+        console.log(err);
+      })
+  .then(() => {
+    axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/895d852c061ef91db419f40459c25d83/${this.state.location.lat},${this.state.location.long}`)
+    .then(res => {
+      let presentState = {...this.state};
+        presentState.currentTemp = res.data.currently.temperature;
+        presentState.currentSummary = res.data.currently.summary;
+        presentState.currentIcon = res.data.currently.icon;
+        presentState.currentTime = res.data.currently.time;
+        presentState.hourlySummary = res.data.hourly.summary;
+        this.setState({ ...presentState });
+        this.setState({ loaded: true});
+      }).catch(err => {
+        console.log(err);
+      })
+  })
+}
+
+
+
+
+
+
+
+componentDidMount() {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    this.setState({location: {autoLat: position.coords.latitude} });
+    this.setState({location: {autoLong: position.coords.longitude} });
+    console.log("Latitude is :", position.coords.latitude);
+    console.log("Longitude is :", position.coords.longitude);
+
+  });
+
+}
+
+
+
+
+
+
+
+
+*/
