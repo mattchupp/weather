@@ -8,7 +8,6 @@ import axios from 'axios';
 
 /* 
   JSON returned with just current forcast
-  - [ ] store currently to state currently and map for the current weather
 
   {
     "latitude": 40.109623,
@@ -49,77 +48,15 @@ import axios from 'axios';
 */
 
 function CurrentForcast() {
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     zipcode: "",
-  //     location: {
-  //       long: null,
-  //       lat: null,
-  //       city: "",
-  //       state: ""
-  //     },
-  //     currentTemp: "",
-  //     currentSummary: "",
-  //     currentIcon: "",
-  //     currentTime: "",
-  //     hourlySummary: "",
-  //     submitted: false,
-  //     loaded: false
-  //   };
-
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
-
-  // }
 
   // Set state
   const [currentWeather, setCurrentWeather] = useState([]); 
   const [currentLocation, setCurrentLocation] = useState([]); 
-  const [zipcode, setZipcode] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [zipcode, setZipcode] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [loaded, setLoaded] = useState(false); 
 
-  // componentDidMount(){
-  //
-  // }
 
-  /* fetches weather data
-    * first get request takes zip code to get lat & long
-    * second get request gets the weather data
-  */
-  const getWeather = () => {
-
-      // const darkSkyKey = process.env.DARK_SKY_KEY;
-
-      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${zipcode}/degrees`)
-      .then(res => {
-        // let presentState = {...this.state};
-        //   presentState.location.long = res.data.lng;
-        //   presentState.location.lat = res.data.lat;
-        //   presentState.location.city = res.data.city;
-        //   presentState.location.state = res.data.state;
-        //   this.setState({ ...presentState });
-        setCurrentLocation(res.data); 
-        console.log(res.data); 
-        }).catch(err => {
-          console.log(err);
-        })
-    // .then(() => {
-    //   axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/895d852c061ef91db419f40459c25d83/${this.state.location.lat},${this.state.location.long}`)
-    //   .then(res => {
-    //     let presentState = {...this.state};
-    //       presentState.currentTemp = res.data.currently.temperature;
-    //       presentState.currentSummary = res.data.currently.summary;
-    //       presentState.currentIcon = res.data.currently.icon;
-    //       presentState.currentTime = res.data.currently.time;
-    //       presentState.hourlySummary = res.data.hourly.summary;
-    //       this.setState({ ...presentState });
-    //       this.setState({ loaded: true});
-    //     }).catch(err => {
-    //       console.log(err);
-    //     })
-    // })
-  }
 
   useEffect(() => {
     if(submitted) {
@@ -137,14 +74,17 @@ function CurrentForcast() {
         axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/895d852c061ef91db419f40459c25d83/${lat},${lng}`)
         .then(res => {
           console.log(res.data)
+          console.log(res.data.currently)
+          setCurrentWeather(res.data.currently)
+          setLoaded(true)
           }).catch(err => {
-            console.log(err);
+            console.log(err)
           })
       }).catch(err => {
-        console.log(err);
+        console.log(err)
       })
     }
-  }, [zipcode, submitted])
+  }, [zipcode, submitted, loaded])
 
   // run on submit
   const handleSubmit = (event) => {
@@ -157,19 +97,19 @@ function CurrentForcast() {
     event.preventDefault();
   }
 
-  // render() {
-    const forecast = {
-      padding: '20px 10px',
-      color: 'white',
-      width: '100%',
-      textAlign: 'center',
-      margin: '0 auto'
-    }
+  
+  const forecast = {
+    padding: '20px 10px',
+    color: 'white',
+    width: '100%',
+    textAlign: 'center',
+    margin: '0 auto'
+  }
 
-    const textInput = {
-      backgroundColor: '#303030',
-      color: 'white'
-    }
+  const textInput = {
+    backgroundColor: '#303030',
+    color: 'white'
+  }
 
   return (
     <div style={forecast}>
@@ -182,154 +122,21 @@ function CurrentForcast() {
         </div>
       </form>
 
-      {/* <div className="uk-flex uk-flex-center">
-        <div className="loader">
-          <div className="circle1"></div>
-          <div className="circle2"></div>
-          <div className="circle3"></div>
-          <div className="circle4"></div>
+      {loaded && 
+        <div className="uk-flex uk-flex-center">
+          <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
+            <City city={currentLocation.city} state={currentLocation.state} />
+            <Summary summary={currentWeather.summary} icon={currentWeather.icon} />
+            <Temperature temp={Math.round(currentWeather.temperature)} />
+            <p>{currentWeather.summary}</p>
+          </div>
         </div>
-      </div> */}
-
+      }
+    
     </div>
   )
 
 } 
-/*
-    // If submitted but not yet loaded show the loading animation
 
-    if (this.state.submitted && !this.state.loaded) {
-      return (
-        <div style={forecast}>
-
-          <form className="uk-margin-small" onSubmit={this.handleSubmit}>
-            <div className="uk-inline">
-              <span className="uk-form-icon" uk-icon="icon: search"></span>
-              <input style={textInput} className="uk-input uk-form-width-medium"
-                type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
-            </div>
-          </form>
-
-          <div className="uk-flex uk-flex-center">
-            <div className="loader">
-              <div className="circle1"></div>
-              <div className="circle2"></div>
-              <div className="circle3"></div>
-              <div className="circle4"></div>
-            </div>
-          </div>
-
-        </div>
-      )
-    }
-
-    // make sure zip code is submitted and data is loaded before showing weather
-    //if (this.state.submitted && this.state.loaded) {
-    if (this.state.submitted && this.state.loaded) {
-      return (
-        <div style={forecast}>
-
-          <form className="uk-margin-small" onSubmit={this.handleSubmit}>
-            <div className="uk-inline">
-              <span className="uk-form-icon" uk-icon="icon: search"></span>
-              <input style={textInput} className="uk-input uk-form-width-medium"
-                type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
-            </div>
-          </form>
-
-          <div className="uk-flex uk-flex-center">
-            <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
-              <City city={this.state.location.city} state={this.state.location.state} />
-              <Summary summary={this.state.currentSummary} icon={this.state.currentIcon} />
-              <Temperature temp={Math.round(this.state.currentTemp)} />
-              <p>{this.state.hourlySummary}</p>
-            </div>
-          </div>
-
-        </div>
-      )
-    } else {
-      return (
-        <div style={forecast}>
-
-          <form className="uk-margin-small" onSubmit={this.handleSubmit}>
-            <div className="uk-inline">
-              <span className="uk-form-icon" uk-icon="icon: search"></span>
-              <input style={textInput} className="uk-input uk-form-width-medium"
-                type="text" placeholder="Zipcode" value={this.state.address} onChange={this.handleChange} />
-            </div>
-          </form>
-
-        </div>
-      )
-    // }
-  }
-
-}
-
-*/
 
 export default CurrentForcast
-
-
-
-
-
-
-/*
-Code that has been removed in my refactoring
-
-getWeather = () => {
-    axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${this.state.zipcode}/degrees`)
-    .then(res => {
-      let presentState = {...this.state};
-        presentState.location.long = res.data.lng;
-        presentState.location.lat = res.data.lat;
-        presentState.location.city = res.data.city;
-        presentState.location.state = res.data.state;
-        this.setState({ ...presentState });
-      }).catch(err => {
-        console.log(err);
-      })
-  .then(() => {
-    axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/895d852c061ef91db419f40459c25d83/${this.state.location.lat},${this.state.location.long}`)
-    .then(res => {
-      let presentState = {...this.state};
-        presentState.currentTemp = res.data.currently.temperature;
-        presentState.currentSummary = res.data.currently.summary;
-        presentState.currentIcon = res.data.currently.icon;
-        presentState.currentTime = res.data.currently.time;
-        presentState.hourlySummary = res.data.hourly.summary;
-        this.setState({ ...presentState });
-        this.setState({ loaded: true});
-      }).catch(err => {
-        console.log(err);
-      })
-  })
-}
-
-
-
-
-
-
-
-componentDidMount() {
-  navigator.geolocation.getCurrentPosition(function(position) {
-    this.setState({location: {autoLat: position.coords.latitude} });
-    this.setState({location: {autoLong: position.coords.longitude} });
-    console.log("Latitude is :", position.coords.latitude);
-    console.log("Longitude is :", position.coords.longitude);
-
-  });
-
-}
-
-
-
-
-
-
-
-
-*/
