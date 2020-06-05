@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import '../App.css';
 import Temperature from '../components/Temperature.js';
 import Summary from '../components/Summary.js';
@@ -6,30 +6,72 @@ import City from '../components/City.js';
 
 import axios from 'axios';
 
-class Weather extends Component {
-  constructor() {
-    super();
-    this.state = {
-      zipcode: "",
-      location: {
-        long: null,
-        lat: null,
-        city: "",
-        state: ""
-      },
-      currentTemp: "",
-      currentSummary: "",
-      currentIcon: "",
-      currentTime: "",
-      hourlySummary: "",
-      submitted: false,
-      loaded: false
-    };
+/* 
+  JSON returned with just current forcast
+  - [ ] store currently to state currently and map for the current weather
+
+  {
+    "latitude": 40.109623,
+    "longitude": -88.275031,
+    "timezone": "America/Chicago",
+    "currently": {
+        "time": 1591370141,
+        "summary": "Humid and Mostly Cloudy",
+        "icon": "partly-cloudy-day",
+        "nearestStormDistance": 30,
+        "nearestStormBearing": 261,
+        "precipIntensity": 0,
+        "precipProbability": 0,
+        "temperature": 79.03,
+        "apparentTemperature": 80.93,
+        "dewPoint": 72.07,
+        "humidity": 0.79,
+        "pressure": 1012,
+        "windSpeed": 7.12,
+        "windGust": 9.29,
+        "windBearing": 232,
+        "cloudCover": 0.76,
+        "uvIndex": 4,
+        "visibility": 10,
+        "ozone": 308.8
+    },
+    ...
+
+    "daily": {
+        "summary": "No precipitation throughout the week.",
+        "icon": "clear-day",
+      ...
+    }
+  }
+
+
+
+*/
+
+function CurrentForcast() {
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     zipcode: "",
+  //     location: {
+  //       long: null,
+  //       lat: null,
+  //       city: "",
+  //       state: ""
+  //     },
+  //     currentTemp: "",
+  //     currentSummary: "",
+  //     currentIcon: "",
+  //     currentTime: "",
+  //     hourlySummary: "",
+  //     submitted: false,
+  //     loaded: false
+  //   };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-  }
+  // }
 
   // componentDidMount(){
   //
@@ -86,7 +128,7 @@ class Weather extends Component {
     event.preventDefault();
   }
 
-  render() {
+  // render() {
     const forecast = {
       padding: '20px 10px',
       color: 'white',
@@ -167,13 +209,13 @@ class Weather extends Component {
 
         </div>
       )
-    }
+    // }
   }
 
 }
 
 
-export default Weather
+export default CurrentForcast
 
 
 
