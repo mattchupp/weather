@@ -125,15 +125,28 @@ function CurrentForcast() {
     if(submitted) {
       axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/Vx2iDKzTlE0ApfqiPcQDVmdgU88QqB0eNkE1jyjlWOoS0MPWa7gUEsopeSY5WiwD/info.json/${zipcode}/degrees`)
       .then(res => {
+
+        // store response data to be used in return
         setCurrentLocation(res.data); 
+
+        // set variables and just pass it straight to the darksky api call
+        const lat = res.data.lat; 
+        const lng = res.data.lng; 
         console.log(res.data); 
+
+        axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/895d852c061ef91db419f40459c25d83/${lat},${lng}`)
+        .then(res => {
+          console.log(res.data)
+          }).catch(err => {
+            console.log(err);
+          })
       }).catch(err => {
         console.log(err);
       })
     }
   }, [zipcode, submitted])
 
-  
+  // run on submit
   const handleSubmit = (event) => {
     // this.getWeather();
     // this.setState({submitted: true});
