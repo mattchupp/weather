@@ -75,6 +75,7 @@ function CurrentForcast() {
         .then(res => {
           setCurrentWeather(res.data.currently)
           setLoaded(true)
+          console.log(res.data.currently)
         }).catch(err => {
           console.log(err)
         })
