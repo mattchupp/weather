@@ -51,10 +51,9 @@ function CurrentForcast() {
 
   // Set state
   const [currentWeather, setCurrentWeather] = useState([]); 
-  const [currentLocation, setCurrentLocation] = useState([]); 
-  const [currentCity, setCity] = useState(''); 
+  // const [currentLocation, setCurrentLocation] = useState([]); 
+  const [currentCity, setCurrentCity] = useState(''); 
   const [currentState, setCurrentState] = useState(''); 
-  // const [currentLocationMapquest, setCurrentLocationMapquest] = useState([]); 
   const [zipcode, setZipcode] = useState('');
   // const [submitted, setSubmitted] = useState(false);
   const [loaded, setLoaded] = useState(false); 
@@ -70,7 +69,11 @@ function CurrentForcast() {
 
       axios.get(`http://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.REACT_APP_MAPQUEST_KEY}&location=${lng},${lat}`)
       .then(res => {
-        console.log(res.data)
+        console.log(res.data.results)
+        console.log('City :' + res.data.results.locations.adminArea5)
+        console.log('State :' + res.data.results.locations.adminArea3)
+        setCurrentCity(res.data.results.locations.adminArea5)
+        setCurrentState(res.data.results.locations.adminArea3)
       })
       .catch(err => {
         console.log(err)
@@ -96,7 +99,9 @@ function CurrentForcast() {
     .then(res => {
 
       // store response data to be used in return
-      setCurrentLocation(res.data); 
+      // setCurrentLocation(res.data); 
+      setCurrentCity(res.data.city); 
+      setCurrentState(res.data.state); 
 
       // set variables and just pass it straight to the darksky api call
       const lat = res.data.lat; 
@@ -120,7 +125,7 @@ function CurrentForcast() {
   // run on submit
   const handleSubmit = (event) => {
     console.log('Submitted: ' + zipcode); 
-    console.log(currentLocation);
+    // console.log(currentLocation);
     getWeather()
     event.preventDefault();
   }
@@ -153,7 +158,8 @@ function CurrentForcast() {
       {loaded && 
         <div className="uk-flex uk-flex-center">
           <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
-            {currentLocation.city && <City city={currentLocation.city} state={currentLocation.state} />}
+            {/* {currentLocation.city && <City city={currentLocation.city} state={currentLocation.state} />} */}
+            <City city={currentCity} state={currentState} />
             <Summary summary={currentWeather.summary} icon={currentWeather.icon} />
             <Temperature temp={Math.round(currentWeather.temperature)} />
             <p>{currentWeather.summary}</p>
