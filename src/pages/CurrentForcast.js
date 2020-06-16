@@ -60,6 +60,8 @@ function CurrentForcast() {
   // const [gotLocation, setGotLocation] = useState(false); 
 
 
+  // ComponentDidMount and get lat/lng if location is allowed
+  // pass lat/lng into the darksky api and fetch weather
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       // setLat(position.coords.latitude);
@@ -70,10 +72,10 @@ function CurrentForcast() {
       axios.get(`http://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.REACT_APP_MAPQUEST_KEY}&location=${lng},${lat}`)
       .then(res => {
         console.log(res.data.results)
-        console.log('City :' + res.data.results.locations.adminArea5)
-        console.log('State :' + res.data.results.locations.adminArea3)
-        setCurrentCity(res.data.results.locations.adminArea5)
-        setCurrentState(res.data.results.locations.adminArea3)
+        // console.log('City :' + res.data.locations.adminArea5)
+        // console.log('State :' + res.data.locations.adminArea3)
+        // setCurrentCity(res.data.results.locations.adminArea5)
+        // setCurrentState(res.data.results.locations.adminArea3)
       })
       .catch(err => {
         console.log(err)
@@ -94,6 +96,7 @@ function CurrentForcast() {
 
   
   // this function runs when a zipcode is submitted
+  // get the lat/lng from zipcode and pass those values in to the darksky api
   function getWeather() {
     axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/${process.env.REACT_APP_ZIPCODE_KEY}/info.json/${zipcode}/degrees`)
     .then(res => {
@@ -158,8 +161,7 @@ function CurrentForcast() {
       {loaded && 
         <div className="uk-flex uk-flex-center">
           <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
-            {/* {currentLocation.city && <City city={currentLocation.city} state={currentLocation.state} />} */}
-            <City city={currentCity} state={currentState} />
+            {currentCity && <City city={currentCity} state={currentState} />}
             <Summary summary={currentWeather.summary} icon={currentWeather.icon} />
             <Temperature temp={Math.round(currentWeather.temperature)} />
             <p>{currentWeather.summary}</p>
