@@ -49,21 +49,47 @@ import axios from 'axios';
 
 function CurrentForcast() {
 
-  // Set state
+  // store weather data from darksky
   const [currentWeather, setCurrentWeather] = useState([]); 
-  const [currentLocation, setCurrentLocation] = useState([]); 
+
+  // stores the city from zipcode/geolocation
+  const [currentCity, setCurrentCity] = useState(''); 
+
+  // stores the state from zipcode/geolocation
+  const [currentState, setCurrentState] = useState(''); 
+
+  // set the zipcode that is put in the zipcode input
   const [zipcode, setZipcode] = useState('');
-  // const [submitted, setSubmitted] = useState(false);
+
+  // if data is loaded
   const [loaded, setLoaded] = useState(false); 
+
+  // const [submitted, setSubmitted] = useState(false);
   // const [gotLocation, setGotLocation] = useState(false); 
 
 
+  // ComponentDidMount and get lat/lng if location is allowed
+  // pass lat/lng into the darksky api and fetch weather
+  // If location isn't allowed, the user will submit zipcode and getWeather() is called
+  // on submit
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       // setLat(position.coords.latitude);
       // setLong(position.coords.longitude);
       const lat = position.coords.latitude; 
       const lng = position.coords.longitude; 
+
+      axios.get(`http://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.REACT_APP_MAPQUEST_KEY}&location=${lng},${lat}`)
+      .then(res => {
+        console.log(res.data.results)
+        // console.log('City :' + res.data.locations.adminArea5)
+        // console.log('State :' + res.data.locations.adminArea3)
+        // setCurrentCity(res.data.results.locations.adminArea5)
+        // setCurrentState(res.data.results.locations.adminArea3)
+      })
+      .catch(err => {
+        console.log(err)
+      })
       
       // get weather from darksky
       axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${process.env.REACT_APP_DARK_SKY_KEY}/${lat},${lng}`)
@@ -80,12 +106,15 @@ function CurrentForcast() {
 
   
   // this function runs when a zipcode is submitted
+  // get the lat/lng from zipcode and pass those values in to the darksky api
+  // if location isn't allowed on page load || getting a different location by zipcode this is called
   function getWeather() {
     axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/${process.env.REACT_APP_ZIPCODE_KEY}/info.json/${zipcode}/degrees`)
     .then(res => {
 
       // store response data to be used in return
-      setCurrentLocation(res.data); 
+      setCurrentCity(res.data.city); 
+      setCurrentState(res.data.state); 
 
       // set variables and just pass it straight to the darksky api call
       const lat = res.data.lat; 
@@ -109,7 +138,7 @@ function CurrentForcast() {
   // run on submit
   const handleSubmit = (event) => {
     console.log('Submitted: ' + zipcode); 
-    console.log(currentLocation);
+    // console.log(currentLocation);
     getWeather()
     event.preventDefault();
   }
@@ -142,7 +171,7 @@ function CurrentForcast() {
       {loaded && 
         <div className="uk-flex uk-flex-center">
           <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
-            {currentLocation.city && <City city={currentLocation.city} state={currentLocation.state} />}
+            {currentCity && <City city={currentCity} state={currentState} />}
             <Summary summary={currentWeather.summary} icon={currentWeather.icon} />
             <Temperature temp={Math.round(currentWeather.temperature)} />
             <p>{currentWeather.summary}</p>
