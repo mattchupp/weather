@@ -53,40 +53,33 @@ function CurrentForcast() {
   const [currentWeather, setCurrentWeather] = useState([]); 
   const [currentLocation, setCurrentLocation] = useState([]); 
   const [zipcode, setZipcode] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  // const [submitted, setSubmitted] = useState(false);
   const [loaded, setLoaded] = useState(false); 
+  // const [gotLocation, setGotLocation] = useState(false); 
 
-/*
 
   useEffect(() => {
-    if(submitted) {
-      axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/${process.env.REACT_APP_ZIPCODE_KEY}/info.json/${zipcode}/degrees`)
+    navigator.geolocation.getCurrentPosition((position) => {
+      // setLat(position.coords.latitude);
+      // setLong(position.coords.longitude);
+      const lat = position.coords.latitude; 
+      const lng = position.coords.longitude; 
+      
+      // get weather from darksky
+      axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${process.env.REACT_APP_DARK_SKY_KEY}/${lat},${lng}`)
       .then(res => {
-
-        // store response data to be used in return
-        setCurrentLocation(res.data); 
-
-        // set variables and just pass it straight to the darksky api call
-        const lat = res.data.lat; 
-        const lng = res.data.lng;  
-
-        // 
-        axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${process.env.REACT_APP_DARK_SKY_KEY}/${lat},${lng}`)
-        .then(res => {
-          setCurrentWeather(res.data.currently)
-          setLoaded(true)
-          console.log(res.data.currently)
-        }).catch(err => {
-          console.log(err)
-        })
+        setCurrentWeather(res.data.currently)
+        setLoaded(true)
+        console.log(res.data.currently)
       }).catch(err => {
         console.log(err)
       })
-    }
-  }, [zipcode, submitted, loaded])
+      
+    }); 
+  }, [])
 
-  */
-
+  
+  // this function runs when a zipcode is submitted
   function getWeather() {
     axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/${process.env.REACT_APP_ZIPCODE_KEY}/info.json/${zipcode}/degrees`)
     .then(res => {
@@ -98,7 +91,7 @@ function CurrentForcast() {
       const lat = res.data.lat; 
       const lng = res.data.lng;  
 
-      // 
+      // get weather from darksky
       axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${process.env.REACT_APP_DARK_SKY_KEY}/${lat},${lng}`)
       .then(res => {
         setCurrentWeather(res.data.currently)
@@ -107,7 +100,7 @@ function CurrentForcast() {
       }).catch(err => {
         console.log(err)
       })
-      
+
     }).catch(err => {
       console.log(err)
     })
@@ -118,7 +111,6 @@ function CurrentForcast() {
     console.log('Submitted: ' + zipcode); 
     console.log(currentLocation);
     getWeather()
-    setSubmitted(true); 
     event.preventDefault();
   }
 
@@ -150,7 +142,7 @@ function CurrentForcast() {
       {loaded && 
         <div className="uk-flex uk-flex-center">
           <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
-            <City city={currentLocation.city} state={currentLocation.state} />
+            {currentLocation.city && <City city={currentLocation.city} state={currentLocation.state} />}
             <Summary summary={currentWeather.summary} icon={currentWeather.icon} />
             <Temperature temp={Math.round(currentWeather.temperature)} />
             <p>{currentWeather.summary}</p>
