@@ -52,6 +52,9 @@ function CurrentForcast() {
   // Set state
   const [currentWeather, setCurrentWeather] = useState([]); 
   const [currentLocation, setCurrentLocation] = useState([]); 
+  const [currentCity, setCity] = useState(''); 
+  const [currentState, setCurrentState] = useState(''); 
+  // const [currentLocationMapquest, setCurrentLocationMapquest] = useState([]); 
   const [zipcode, setZipcode] = useState('');
   // const [submitted, setSubmitted] = useState(false);
   const [loaded, setLoaded] = useState(false); 
@@ -64,6 +67,14 @@ function CurrentForcast() {
       // setLong(position.coords.longitude);
       const lat = position.coords.latitude; 
       const lng = position.coords.longitude; 
+
+      axios.get(`http://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.REACT_APP_MAPQUEST_KEY}&location=${lng},${lat}`)
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
       
       // get weather from darksky
       axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${process.env.REACT_APP_DARK_SKY_KEY}/${lat},${lng}`)
