@@ -4,14 +4,16 @@ import './App.css';
 import CurrentForcast from './pages/CurrentForcast';
 
 
-
 class App extends Component {
   render() {
     return (
-      <div className="container">
-        <CurrentForcast />
-        {/* <Weather /> */}
-      </div>
+      <>
+        <div className="container">
+          
+          <CurrentForcast />
+          {/* <Weather /> */}
+        </div>
+      </>
     );
   }
 }
