@@ -17,14 +17,13 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 
 
-/*
 
-const rootElement = document.getElementById('root')
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  rootElement
-)
 
-*/
+// const rootElement = document.getElementById('root')
+// ReactDOM.render(
+//   <Provider store={store}>
+//     <App />
+//   </Provider>,
+//   rootElement
+// )
+
