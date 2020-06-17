@@ -3,6 +3,7 @@ import '../App.css';
 import Temperature from '../components/Temperature.js';
 import Summary from '../components/Summary.js';
 import City from '../components/City.js';
+import moment from 'moment'; 
 
 import axios from 'axios';
 
@@ -188,22 +189,19 @@ function CurrentForcast() {
             <Temperature temp={Math.round(currentWeather.temperature)} />
           </div>
         </div>
-
-      
       }
 
-      {hourlyWeather.map((hour) => (
-        <>
-        <div className="uk-flex uk-flex-center" key={hour.time}>
-          <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
-            <p>{hour.time}</p>
+      <br />
+
+      <div className="uk-grid-small uk-grid-column-small" uk-grid="true">
+        {hourlyWeather.map((hour) => (  
+          <div key={hour.time} className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
+            <p>{moment.unix(hour.time).format('LLLL')}</p>
             <Summary summary={hour.summary} icon={hour.icon} />
             <Temperature temp={Math.round(hour.temperature)} />
-          </div>
-        </div>
-        <br />
-        </>
-      ))}
+          </div>    
+        ))}
+      </div>
 
     </div>
   )
