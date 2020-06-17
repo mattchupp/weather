@@ -68,6 +68,9 @@ function CurrentForcast() {
   // if data is loaded
   const [loaded, setLoaded] = useState(false); 
 
+  // toggle hourly weather
+  const [showHourly, setShowHourly] = useState(false); 
+
   // const [submitted, setSubmitted] = useState(false);
   // const [gotLocation, setGotLocation] = useState(false); 
 
@@ -193,16 +196,23 @@ function CurrentForcast() {
 
       <br />
 
-      <div className="uk-grid-small uk-grid-column-small" uk-grid="true">
-        {hourlyWeather.map((hour) => (  
-          <div key={hour.time} className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
-            <p>{moment.unix(hour.time).format('LLLL')}</p>
-            <Summary summary={hour.summary} icon={hour.icon} />
-            <Temperature temp={Math.round(hour.temperature)} />
-          </div>    
-        ))}
-      </div>
+      {loaded && 
+        <button className="uk-button uk-button-primary" onClick={((e) => setShowHourly(!showHourly))}>Show Hourly</button>
+      }
 
+      <br />
+
+      {showHourly &&
+        <div className="uk-grid-small uk-grid-column-small" uk-grid="true">
+          {hourlyWeather.map((hour) => (  
+            <div key={hour.time} className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-4">
+              <p>{moment.unix(hour.time).format('LLLL')}</p>
+              <Summary summary={hour.summary} icon={hour.icon} />
+              <Temperature temp={Math.round(hour.temperature)} />
+            </div>    
+          ))}
+        </div>
+      }
     </div>
   )
 
