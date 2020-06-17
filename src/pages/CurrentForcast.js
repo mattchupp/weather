@@ -52,6 +52,9 @@ function CurrentForcast() {
   // store weather data from darksky
   const [currentWeather, setCurrentWeather] = useState([]); 
 
+  // store hourly weather
+  const [hourlyWeather, setHourlyWeather] = useState([]); 
+
   // stores the city from zipcode/geolocation
   const [currentCity, setCurrentCity] = useState(''); 
 
@@ -82,7 +85,9 @@ function CurrentForcast() {
       axios.get(`http://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.REACT_APP_MAPQUEST_KEY}&location=${lng},${lat}`)
       .then(res => {
         console.log(res.data.results)
-        // console.log('City :' + res.data.locations.adminArea5)
+        let city = res.data.results.locations.adminArea5.toString();
+        console.log(city) 
+        // console.log('City :' + res.data.results)
         // console.log('State :' + res.data.locations.adminArea3)
         // setCurrentCity(res.data.results.locations.adminArea5)
         // setCurrentState(res.data.results.locations.adminArea3)
@@ -95,8 +100,12 @@ function CurrentForcast() {
       axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${process.env.REACT_APP_DARK_SKY_KEY}/${lat},${lng}`)
       .then(res => {
         setCurrentWeather(res.data.currently)
+        // console.log(res.data.hourly)
+        setHourlyWeather(res.data.hourly.data)
+        
         setLoaded(true)
         console.log(res.data.currently)
+
       }).catch(err => {
         console.log(err)
       })
@@ -124,6 +133,7 @@ function CurrentForcast() {
       axios.get(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${process.env.REACT_APP_DARK_SKY_KEY}/${lat},${lng}`)
       .then(res => {
         setCurrentWeather(res.data.currently)
+        setHourlyWeather(res.data.hourly.data)
         setLoaded(true)
         console.log(res.data.currently)
       }).catch(err => {
@@ -157,6 +167,8 @@ function CurrentForcast() {
     color: 'white'
   }
 
+  console.log(hourlyWeather)
+
   return (
     <div style={forecast}>
 
@@ -174,11 +186,32 @@ function CurrentForcast() {
             {currentCity && <City city={currentCity} state={currentState} />}
             <Summary summary={currentWeather.summary} icon={currentWeather.icon} />
             <Temperature temp={Math.round(currentWeather.temperature)} />
-            <p>{currentWeather.summary}</p>
           </div>
         </div>
+
+      
       }
-    
+
+      {hourlyWeather.map((hour) => (
+      
+
+        <div className="uk-flex uk-flex-center" key={hour.time}>
+          <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
+            <Summary summary={hour.summary} icon={hour.icon} />
+            <Temperature temp={Math.round(hour.temperature)} />
+          </div>
+        </div>
+      ))}
+{/*
+        {hourlyWeather.map((hour) => (
+          <div className="uk-flex uk-flex-center">
+            <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
+              <Summary summary={hour.summary} icon={hour.icon} />
+              <Temperature temp={Math.round(hour.data.temperature)} />
+            </div>
+          </div>
+        ))} 
+*/}
     </div>
   )
 
