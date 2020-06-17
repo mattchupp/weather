@@ -193,25 +193,18 @@ function CurrentForcast() {
       }
 
       {hourlyWeather.map((hour) => (
-      
-
+        <>
         <div className="uk-flex uk-flex-center" key={hour.time}>
           <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
+            <p>{hour.time}</p>
             <Summary summary={hour.summary} icon={hour.icon} />
             <Temperature temp={Math.round(hour.temperature)} />
           </div>
         </div>
+        <br />
+        </>
       ))}
-{/*
-        {hourlyWeather.map((hour) => (
-          <div className="uk-flex uk-flex-center">
-            <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-width-1-2">
-              <Summary summary={hour.summary} icon={hour.icon} />
-              <Temperature temp={Math.round(hour.data.temperature)} />
-            </div>
-          </div>
-        ))} 
-*/}
+
     </div>
   )
 
